@@ -132,16 +132,31 @@ public class Graph {
     }
 
     /**
-     * find the connected components of a graph
+     * find the connected components of a graph using BFS
      *
      * @param graph
      */
-    private static void findConnectedComponents(Graph graph) {
+    private static void findConnectedComponentsUsingBFS(Graph graph) {
         markUnexplored(graph);
         for (int i = 0; i < graph.vertices; i++) {
             if (!graph.explored[i]) {
                 BFS(graph, i);
             }
+        }
+    }
+
+    /**
+     * find the connected components of a graph using DFS
+     *
+     * @param graph
+     */
+    private static void findConnectedComponentsUsingDFS(Graph graph) {
+        markUnexplored(graph);
+        for (int i = 0; i < graph.vertices; i++) {
+            if (!graph.explored[i]) {
+                DFS_Visit(graph, i);
+            }
+            System.out.println();
         }
     }
 
@@ -213,6 +228,7 @@ public class Graph {
 
     /**
      * find the topological sort using DFS
+     *
      * @param graph
      * @param u
      * @param str
@@ -229,6 +245,7 @@ public class Graph {
 
     /**
      * print all the possible topological sort
+     *
      * @param graph
      */
     private static void printAllTopologicalSort(Graph graph) {
@@ -239,6 +256,7 @@ public class Graph {
 
     /**
      * find all the possible topological sort
+     *
      * @param graph
      * @param str
      */
@@ -246,7 +264,7 @@ public class Graph {
         if (str.length() == graph.vertices) {
             System.out.println(str.toString());
         }
-        for (int i=0;i<graph.vertices;i++) {
+        for (int i = 0; i < graph.vertices; i++) {
             if (!graph.explored[i] && graph.indegree[i] == 0) {
                 graph.explored[i] = true;
                 str.append(i);
@@ -257,7 +275,7 @@ public class Graph {
                 for (int v : graph.adj[i]) {
                     graph.indegree[v]++;
                 }
-                str.deleteCharAt(str.length()-1);
+                str.deleteCharAt(str.length() - 1);
                 graph.explored[i] = false;
             }
         }
@@ -265,12 +283,13 @@ public class Graph {
 
     /**
      * reverse the graph
+     *
      * @param graph
      * @return
      */
     private static Graph reverseGraph(Graph graph) {
         Graph revG = new Graph(graph.vertices);
-        for (int i=0;i<graph.vertices;i++) {
+        for (int i = 0; i < graph.vertices; i++) {
             for (int v : graph.adj[i]) {
                 addDirectedEdge(revG, v, i);
             }
@@ -281,13 +300,14 @@ public class Graph {
     /**
      * compute the finishing time of all
      * the vertices of a graph using DFS
+     *
      * @param graph
      * @return
      */
     private static int[] firstDFSLoop(Graph graph) {
         int[] f = new int[graph.vertices];
         markUnexplored(graph);
-        for (int i=graph.vertices-1;i>=0;i--) {
+        for (int i = graph.vertices - 1; i >= 0; i--) {
             if (!graph.explored[i]) {
                 findFinishTime(graph, i, f);
             }
@@ -297,6 +317,7 @@ public class Graph {
 
     /**
      * find the finishing time of a vertex
+     *
      * @param graph
      * @param u
      * @param f
@@ -305,7 +326,7 @@ public class Graph {
         graph.explored[u] = true;
         for (int v : graph.adj[u]) {
             if (!graph.explored[v]) {
-                findFinishTime(graph,v,f);
+                findFinishTime(graph, v, f);
             }
         }
         graph.finishingTime++;
@@ -315,13 +336,14 @@ public class Graph {
     /**
      * compute the strongly connected components of a
      * graph using the finishing time of the vertices
+     *
      * @param graph
      * @param f
      */
     private static void secondDFSLoop(Graph graph, int[] f) {
         markUnexplored(graph);
         //loop through the finishing time array in decreasing order
-        for (int i=f.length-1;i>=0;i--) {
+        for (int i = f.length - 1; i >= 0; i--) {
             int u = f[i];
             if (!graph.explored[u]) {
                 findStrongConnectedComponents(graph, u);
@@ -332,6 +354,7 @@ public class Graph {
 
     /**
      * find the strongly connected components of a graph
+     *
      * @param graph
      * @param u
      */
@@ -340,13 +363,14 @@ public class Graph {
         System.out.print(u + " ");
         for (int v : graph.adj[u]) {
             if (!graph.explored[v]) {
-                findStrongConnectedComponents(graph,v);
+                findStrongConnectedComponents(graph, v);
             }
         }
     }
 
     /**
      * compute the strongly connected components of a directed graph
+     *
      * @param graph
      */
     private static void computeStronglyConnectedComponents(Graph graph) {
@@ -388,8 +412,10 @@ public class Graph {
         addEdge(graph1, 1, 3);
         addEdge(graph1, 5, 7);
         addEdge(graph1, 5, 9);
-        System.out.println("Connected Components of an undirected graph:");
-        findConnectedComponents(graph1);
+        System.out.println("Connected Components of an undirected graph using BFS :");
+        findConnectedComponentsUsingBFS(graph1);
+        System.out.println("Connected Components of an undirected graph using DFS :");
+        findConnectedComponentsUsingDFS(graph1);
 
         Graph graph2 = new Graph(6);
         addEdge(graph2, 0, 1);
@@ -433,8 +459,6 @@ public class Graph {
         addDirectedEdge(graph5, 7, 4);
         addDirectedEdge(graph5, 4, 1);
         addDirectedEdge(graph5, 1, 7);
-        printGraph(graph5);
-
         System.out.println("Compute Strongly Connected Components : ");
         computeStronglyConnectedComponents(graph5);
     }

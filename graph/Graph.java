@@ -1,8 +1,6 @@
 package graph;
 
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.Stack;
+import java.util.*;
 
 public class Graph {
 
@@ -23,9 +21,19 @@ public class Graph {
         finishingTime = -1;
     }
 
-    private static void addEdge(Graph graph, int source, int dest) {
-        graph.adj[source].add(dest);
-        graph.adj[dest].add(source);
+    public int getVertices() {
+        return vertices;
+    }
+
+    public LinkedList<Integer>[] getAdj() {
+        return adj;
+    }
+
+    public void addEdge(int source, int dest) {
+        if (dest != -1) {
+            adj[source].add(dest);
+            adj[dest].add(source);
+        }
     }
 
     private static void addDirectedEdge(Graph graph, int source, int dest) {
@@ -45,7 +53,7 @@ public class Graph {
         }
     }
 
-    private static void markUnexplored(Graph graph) {
+    public static void markUnexplored(Graph graph) {
         for (int i = 0; i < graph.vertices; i++) {
             graph.explored[i] = false;
         }
@@ -217,6 +225,7 @@ public class Graph {
      */
     private static void printTopologicalSort(Graph graph) {
         markUnexplored(graph);
+        //you can also use a stack in place of stringbuilder
         StringBuilder str = new StringBuilder();
         for (int i = 0; i < graph.vertices; i++) {
             if (!graph.explored[i]) {
@@ -346,25 +355,9 @@ public class Graph {
         for (int i = f.length - 1; i >= 0; i--) {
             int u = f[i];
             if (!graph.explored[u]) {
-                findStrongConnectedComponents(graph, u);
+                DFS_Visit(graph, u);
             }
             System.out.print("\n");
-        }
-    }
-
-    /**
-     * find the strongly connected components of a graph
-     *
-     * @param graph
-     * @param u
-     */
-    private static void findStrongConnectedComponents(Graph graph, int u) {
-        graph.explored[u] = true;
-        System.out.print(u + " ");
-        for (int v : graph.adj[u]) {
-            if (!graph.explored[v]) {
-                findStrongConnectedComponents(graph, v);
-            }
         }
     }
 
@@ -384,15 +377,15 @@ public class Graph {
 
     public static void main(String[] args) {
         Graph graph = new Graph(6);
-        addEdge(graph, 0, 1);
-        addEdge(graph, 0, 2);
-        addEdge(graph, 1, 2);
-        addEdge(graph, 1, 3);
-        addEdge(graph, 2, 3);
-        addEdge(graph, 2, 4);
-        addEdge(graph, 3, 4);
-        addEdge(graph, 3, 5);
-        addEdge(graph, 4, 5);
+        graph.addEdge(0, 1);
+        graph.addEdge(0, 2);
+        graph.addEdge( 1, 2);
+        graph.addEdge( 1, 3);
+        graph.addEdge( 2, 3);
+        graph.addEdge( 2, 4);
+        graph.addEdge( 3, 4);
+        graph.addEdge( 3, 5);
+        graph.addEdge( 4, 5);
         printGraph(graph);
 
         System.out.println("Breadth First Search: ");
@@ -404,28 +397,28 @@ public class Graph {
         findShortestPath(graph, 0, 5);
 
         Graph graph1 = new Graph(10);
-        addEdge(graph1, 0, 2);
-        addEdge(graph1, 0, 4);
-        addEdge(graph1, 2, 4);
-        addEdge(graph1, 4, 6);
-        addEdge(graph1, 4, 8);
-        addEdge(graph1, 1, 3);
-        addEdge(graph1, 5, 7);
-        addEdge(graph1, 5, 9);
+        graph1.addEdge( 0, 2);
+        graph1.addEdge( 0, 4);
+        graph1.addEdge( 2, 4);
+        graph1.addEdge( 4, 6);
+        graph1.addEdge( 4, 8);
+        graph1.addEdge( 1, 3);
+        graph1.addEdge( 5, 7);
+        graph1.addEdge( 5, 9);
         System.out.println("Connected Components of an undirected graph using BFS :");
         findConnectedComponentsUsingBFS(graph1);
         System.out.println("Connected Components of an undirected graph using DFS :");
         findConnectedComponentsUsingDFS(graph1);
 
         Graph graph2 = new Graph(6);
-        addEdge(graph2, 0, 1);
-        addEdge(graph2, 0, 2);
-        addEdge(graph2, 1, 2);
-        addEdge(graph2, 1, 3);
-        addEdge(graph2, 2, 4);
-        addEdge(graph2, 3, 4);
-        addEdge(graph2, 3, 5);
-        addEdge(graph2, 4, 5);
+        graph2.addEdge( 0, 1);
+        graph2.addEdge( 0, 2);
+        graph2.addEdge( 1, 2);
+        graph2.addEdge( 1, 3);
+        graph2.addEdge( 2, 4);
+        graph2.addEdge( 3, 4);
+        graph2.addEdge( 3, 5);
+        graph2.addEdge( 4, 5);
         System.out.println("Depth First Search: ");
         DFS(graph2, 0);
         System.out.println("Depth First Search Recursive: ");

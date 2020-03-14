@@ -376,7 +376,7 @@ public class Graph {
     }
 
     public static void main(String[] args) {
-        Graph graph = new Graph(6);
+        /*Graph graph = new Graph(6);
         graph.addEdge(0, 1);
         graph.addEdge(0, 2);
         graph.addEdge( 1, 2);
@@ -438,7 +438,7 @@ public class Graph {
         addDirectedEdge(graph4, 1, 3);
         addDirectedEdge(graph4, 2, 3);
         System.out.println("All Topological sort: ");
-        printAllTopologicalSort(graph4);
+        printAllTopologicalSort(graph4);*/
 
         Graph graph5 = new Graph(9);
         addDirectedEdge(graph5, 0, 3);

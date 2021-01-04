@@ -50,6 +50,6 @@ public class LetterCombinations {
     }
 
     public static void main(String[] args) {
-        System.out.println(letterCombinations("234"));
+        System.out.println(letterCombinations("324"));
     }
 }
